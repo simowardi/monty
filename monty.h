@@ -40,14 +40,18 @@ typedef struct instruction_s
 } instruction_t;
 
 /* Function prototypes for opcode implementations */
-void push(stack_t **stack, unsigned int line_number);
+void push(stack_t **stack, unsigned int line_number, char *data);
 void pall(stack_t **stack, unsigned int line_number);
+
 
 /* Additional function prototypes */
 char *get_next_token(char **line);
 unsigned int get_line_number(void);
 void free_tokens(char **tokens);
 int parse_number(char *token);
+
+/*other function */
+int is_numeric(const char *str);
 
 #endif /* MONTY_H */
 
