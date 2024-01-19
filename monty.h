@@ -61,14 +61,13 @@ extern MontyContext_t montyContext;
 MontyContext_t customContext = {NULL, NULL, NULL, 0};
 
 int exe_opcode(char *ct, stack_t **stack_h, unsigned int count, FILE *file);
-ssize_t getstdin(char **lineptr, int file);
 
-void add_node(stack_t **head, int n);
+void my_add_node(stack_t **head, int n);
+
 void free_stack(stack_t *head);
 
 void add_node(stack_t **head, int n);
 void add_queue(stack_t **head, int new);
-
 
 void push_monty(stack_t **head, unsigned int number);
 void pall_monty(stack_t **head, unsigned int number);
