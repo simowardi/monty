@@ -16,13 +16,13 @@
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct stack_s
 {
-		int n;
-		struct stack_s *prev;
-		struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -31,27 +31,50 @@ typedef struct stack_s
  * @f: function to handle the opcode
  *
  * Description: opcode and its function
- * for stack, queues, LIFO, FIFO
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct instruction_s
 {
-		char *opcode;
-		void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* Function prototypes for opcode implementations */
-void push(stack_t **stack, unsigned int line_number, char *data);
-void pall(stack_t **stack, unsigned int line_number);
+/**
+ * struct MontyContext - Variables - argument, file, lineContent
+ * @argument: Value
+ * @file: Pointer to Monty file
+ * @lineContent: Line content
+ * @flagLifi: Flag to change stack <-> queue
+ *
+ * Description: Carries values through the program
+ */
+typedef struct MontyContext
+{
+	char *argument;
+	FILE *file;
+	char *lineContent;
+	int flagLifi;
+} MontyContext_t;
+
+extern MontyContext_t montyContext;
+
+int exe_opcode(char *ct, stack_t **stack_h, unsigned int count, FILE *file);
+ssize_t getstdin(char **lineptr, int file);
+
+void add_node(stack_t **head, int n);
+void free_stack(stack_t *head);
+
+void add_node(stack_t **head, int n);
+void add_queue(stack_t **head, int new);
 
 
-/* Additional function prototypes */
-char *get_next_token(char **line);
-unsigned int get_line_number(void);
-void free_tokens(char **tokens);
-int parse_number(char *token);
+void push_monty(stack_t **head, unsigned int number);
+void pall_monty(stack_t **head, unsigned int number);
+void pint_monty(stack_t **head, unsigned int number);
+void pop_monty(stack_t **head, unsigned int counter);
 
-/*other function */
-int is_numeric(const char *str);
+void swap_top_two_elements(stack_t **stack, unsigned int line_number);
+void add_top_two_elements(stack_t **stack, unsigned int line_number);
+void nop_nothing(stack_t **head, unsigned int line_num);
 
-#endif /* MONTY_H */
-
+#endif
