@@ -9,7 +9,6 @@
  */
 int main(int argc, char *argv[])
 {
-	MontyContext_t customContext = {NULL, NULL, NULL, 0};
 	char *lineContent;
 	FILE *montyFile;
 	size_t size = 0;

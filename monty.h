@@ -58,6 +58,8 @@ typedef struct MontyContext
 
 extern MontyContext_t montyContext;
 
+MontyContext_t customContext = {NULL, NULL, NULL, 0};
+
 int exe_opcode(char *ct, stack_t **stack_h, unsigned int count, FILE *file);
 ssize_t getstdin(char **lineptr, int file);
 
