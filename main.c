@@ -10,7 +10,6 @@ int main(int argc, char **argv)
 {
 	FILE *montyfile;
 	char content[200];
-	char *args[3];
 	unsigned int num_line = 0;
 	stack_t *stackHead = NULL; /* empty stack */
 
