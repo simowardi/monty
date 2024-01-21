@@ -51,7 +51,7 @@ void monty_add(stack_t **headstack, unsigned int number_line)
 	}
 
 	(*headstack)->next->n += (*headstack)->n;
-	pop(headstack, number_line);
+	monty_pop(headstack, number_line);
 }
 
 /**
