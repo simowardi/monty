@@ -10,13 +10,13 @@ void (*select_op_code(void))(stack_t **headstack, unsigned int line_num)
 	unsigned int j = 0;
 
 	instruction_t custom_operations[] = {
-		{"push", push},
-		{"pall", pall},
-		{"pint", pint},
-		{"pop", pop},
-		{"swap", swap},
-		{"add", _add},
-		{"nop", nop},
+		{"push", monty_push},
+		{"pall", montu_pall},
+		{"pint", monty_pint},
+		{"pop", monty_pop},
+		{"swap", monty_swap},
+		{"add", monty_add},
+		{"nop", monty_nop},
 		{NULL, NULL}
 	};
 	while (custom_operations[j].opcode != NULL)
