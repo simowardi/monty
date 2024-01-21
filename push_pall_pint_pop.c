@@ -1,112 +1,114 @@
 #include "monty.h"
 
 /**
- * push_monty - Adds a node to the stack or queue.
- * @stack: A Pointer to the stack
- * @line_number: the Line number in the script
- * Return: No return Value .
+ * monty_push - function that Pushes a value to a stack_t linked list.
+ * @headstack: pointer to head node of stack
+ * @number_line: line number in the Monty bytecode file.
+ * Return: Nothing
  */
-void push_monty(stack_t **stack, unsigned int line_number)
+void monty_push(stack_t **headstack, unsigned int number_line)
 {
-	int n, j = 0, flag = 0;
+	int j;
 
-	if (montyContext.argument)
+	if (args[1] == NULL)
 	{
-		if (montyContext.argument[0] == '-')
-			j++;
-
-		while (montyContext.argument[j] != '\0')
+		fprintf(stderr, "L%u: usage: push integer\n", number_line);
+		node_free(*headstack);
+		exit(EXIT_FAILURE);
+	}
+	if (strcmp(args[1], "-0") == 0)
+		args[1] = "0";
+	if (strcmp(args[1], "0") != 0 && atoi(args[1]) == 0)
+	{
+		fprintf(stderr, "L%u: usage: push integer\n", number_line);
+		node_free(*headstack);
+		exit(EXIT_FAILURE);
+	}
+	if (args[1][0] == '-')
+		i = 1;
+	else
+		i = 0;
+	while (args[1][j] != '\0') /*identify non-integer element*/
+	{
+		if (!isdigit(args[1][i]))
 		{
-			if (!isdigit(montyContext.argument[j]))
-				flag = 1;
-			j++;
-		}
-
-		if (flag == 1)
-		{
-			fprintf(stderr, "L%d: usage: push integer\n", line_number);
-			fclose(montyContext.file);
-			free(montyContext.lineContent);
-			free_stack(*stack);
+			fprintf(stderr, "L%u: usage: push integer\n", number_line);
+			node_free(*headstack);
 			exit(EXIT_FAILURE);
 		}
+		j++;
+	}
+	if (stack_addnode(headstack, atoi(args[1])) == NULL)
+	{
+		node_free(*headstack);
+		exit(EXIT_FAILURE);
+	}
+}
+
+/**
+ * monty_pall - a function that print stack elements
+ * @headstack: a pointer to head node of stack
+ * @number_line: a line number in the Monty bytecode file.
+ * Return: Nothing
+ */
+void monty_pall(stack_t **headstack, unsigned int number_line)
+{
+	stack_t *p;
+
+	(void)number_line;
+	if (headstack != NULL || *headstack != NULL)
+	{
+		p = *headstack;
+		while (p)
+		{
+			printf("%d\n", p->n);
+			p = p->next;
+		}
+	}
+}
+
+/**
+ * monty_pint - prints the value at the top of the stack
+ * @headstack: a pointer to the head node of stack
+ * @number_line: a line number in the Monty bytecode file.
+ * Return: Nothing
+ */
+void monty_pint(stack_t **headstack, unsigned int number_line)
+{
+	if (headstack == NULL || *headstack == NULL)
+	{
+		fprintf(stderr, "L%u: can't pint, stack empty\n", number_line);
+		exit(EXIT_FAILURE);
+	}
+	printf("%d\n", (*headstack)->n);
+}
+
+/**
+ * monty_pop - removes the top element of the stack
+ * @headstack: a pointer to the head node of stack
+ * @number_line: a line number in the Monty bytecode file.
+ * Return: Nothing
+ */
+void monty_pop(stack_t **headstack, unsigned int number_line)
+{
+	stack_t *p;
+
+	if (headstack == NULL || *headstack == NULL)
+	{
+		fprintf(stderr, "L%u: can't pop an empty stack\n", number_line);
+		exit(EXIT_FAILURE);
+	}
+	p = *headstack;
+	if ((*headstack)->next == NULL)
+	{
+		*headstack = NULL;
+		free(p);
 	}
 	else
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_number);
-		fclose(montyContext.file);
-		free(montyContext.lineContent);
-		free_stack(*stack);
-		exit(EXIT_FAILURE);
+		*headstack = (*headstack)->next;
+		(*headstack)->prev = NULL;
+		free(p);
 	}
-
-	n = atoi(montyContext.argument);
-
-	if (montyContext.flagLifi == 0)
-		add_node(stack, n);
-	else
-		add_queue(stack, n);
-}
-
-/**
- * pall_monty - Prints all values on the stack.
- * @stack: Pointer to the stack
- * @line_number: Line number in the script (not used)
- * Return: No return value
- */
-void pall_monty(stack_t **stack, unsigned int line_number)
-{
-	stack_t *current;
-	(void)line_number;
-
-	current = *stack;
-	while (current)
-	{
-		printf("%d\n", current->n);
-		current = current->next;
-	}
-}
-
-/**
- * pint_monty - Prints the top element of the stack.
- * @stack: Pointer to the stack
- * @line_number: Line number in the script
- * Return: No return value
- */
-void pint_monty(stack_t **stack, unsigned int line_number)
-{
-	if (*stack == NULL)
-	{
-		fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
-		fclose(montyContext.file);
-		free(montyContext.lineContent);
-		free_stack(*stack);
-		exit(EXIT_FAILURE);
-	}
-	printf("%d\n", (*stack)->n);
-}
-
-/**
- * pop_monty - Removes the top element of the stack.
- * @stack: Pointer to the stack
- * @line_number: Line number in the script
- * Return: No return value
- */
-void pop_monty(stack_t **stack, unsigned int line_number)
-{
-	stack_t *current;
-
-	if (*stack == NULL)
-	{
-		fprintf(stderr, "L%d: can't pop an empty stack\n", line_number);
-		fclose(montyContext.file);
-		free(montyContext.lineContent);
-		free_stack(*stack);
-		exit(EXIT_FAILURE);
-	}
-
-	current = *stack;
-	*stack = current->next;
-	free(current);
 }
 

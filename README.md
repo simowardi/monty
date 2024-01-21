@@ -1,6 +1,24 @@
 Monty Project
 This project involves creating an interpreter for Monty ByteCodes files, which are scripts written in the Monty scripting language. The interpreter operates on a unique stack with specific instructions to manipulate it.
 
+ monty
+
+0x19. C - Stacks, Queues - LIFO, FIFO
+
+Data structures provided Monty Language(byteCode files)
+
+ 0_ push, pall - Implement the push and pall opcodes.
+
+ 1_ pint - Implement the pint opcode
+
+ 2_ pop - implement the pop opcode
+
+ 3_ swap - Implement the swap opcode
+
+ 4_ add - Implement the add opcode.
+
+ 5_ nop - Implement the nop opcode.
+
 Learning Objectives
 By completing this project, we gained knowledge and understanding of the following concepts:
 

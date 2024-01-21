@@ -1,78 +1,68 @@
 #include "monty.h"
+
 /**
- * swap_top_two_elements - Swaps the top two elements of the stack.
- * @stack: Pointer to the stack
- * @line_number: Line number in the script
- * Return: No return value
+ * monty_swap - a function that swaps the top two elements of the stack
+ * @headstack: a pointer tath poit to the head node of stack
+ * @number_line: line number in the Monty bytecode file.
+ * Return: Nothing
  */
-void swap_top_two_elements(stack_t **stack, unsigned int line_number)
+void monty_swap(stack_t **headstack, unsigned int number_line)
 {
-	stack_t *current = *stack;
-	int length = 0, temp;
+	stack_t *temp, *p;
 
-	while (current)
+	if (*headstack == NULL || (*headstack)->next == NULL)
 	{
-		current = current->next;
-		length++;
-	}
-
-	if (length < 2)
-	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
-		fclose(montyContext.file);
-		free(montyContext.lineContent);
-		free_stack(*stack);
+		fprintf(stderr, "L%u: can't swap, stack too short\n", number_line);
 		exit(EXIT_FAILURE);
 	}
-
-	current = *stack;
-	temp = current->n;
-	current->n = current->next->n;
-	current->next->n = temp;
+	temp = *headstack;
+	p = (*headstack)->next;
+	if (p->next == NULL)
+	{
+		temp->next = NULL;
+		temp->prev = p;
+		p->prev = NULL;
+		p->next = temp;
+		*headstack = p;
+	}
+	else
+	{
+		temp->next = p->next;
+		temp->prev = p;
+		p->prev = NULL;
+		p->next = temp;
+		*headstack = p;
+	}
 }
 
 /**
-  *nop_nothing - The opcode nop doesn’t do anything.
-  *@head: the stack head
-  *@line_num: the line number
-  *Return: no return
+ * monty_add - a function that that adds the top two elements of the stack
+ * @headstack: a pointer to the head node of stack
+ * @number_line: a line number in the Monty bytecode file.
+ * Return: Nothing
  */
-void nop_nothing(stack_t **head, unsigned int line_num)
+void monty_add(stack_t **headstack, unsigned int number_line)
 {
-	(void) line_num;
-	(void) head;
-}
-
-/**
- * add_top_two_elements - Adds the top two elements of the stack.
- * @stack: Pointer to the stack
- * @line_number: Line number in the script
- * Return: No return value
- */
-void add_top_two_elements(stack_t **stack, unsigned int line_number)
-{
-	stack_t *current = *stack;
-	int length = 0, result;
-
-	while (current)
+	/* check if stack contains at least two elements */
+	if (*headstack == NULL || (*headstack)->next == NULL)
 	{
-		current = current->next;
-		length++;
-	}
-
-	if (length < 2)
-	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-		fclose(montyContext.file);
-		free(montyContext.lineContent);
-		free_stack(*stack);
+		fprintf(stderr, "L%u: can't add, stack too short\n", number_line);
 		exit(EXIT_FAILURE);
 	}
 
-	current = *stack;
-	result = current->n + current->next->n;
-	current->next->n = result;
-	*stack = current->next;
-	free(current);
+	(*headstack)->next->n += (*headstack)->n;
+	pop(headstack, number_line);
+}
+
+/**
+ * monty_nop - a function that Do nothing
+ * @headstack: a pointer to the head node of stack
+ * @number_line: a line number in the Monty bytecode file.
+ * Return: Nothing
+ */
+void monty_nop(stack_t **headstack, unsigned int number_line)
+{
+	(void)headstack;
+	(void)number_line;
 }
 

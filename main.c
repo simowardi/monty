@@ -1,52 +1,52 @@
 #include "monty.h"
-#include <stdio.h>
 
 /**
- * main - Monty code interpreter
- * @argc: Number of arguments
- * @argv: Monty file location
- * Return: 0 on success
+ * main - the monty program main function
+ * @argc: Number of command-line arguments
+ * @argv: Array of command-line argument strings
+ * Return: Always returns 0 on successful execution
  */
-int main(int argc, char *argv[])
+int main(int argc, char **argv)
 {
-	char *lineContent;
-	FILE *montyFile;
-	size_t size = 0;
-	ssize_t readLine = 1;
-	stack_t *stack = NULL;
-	unsigned int count = 0;
+	FILE *montyfile;
+	char content[200];
+	char *args[3];
+	unsigned int num_line = 0;
+	stack_t *stackHead = NULL; /* empty stack */
 
-	customContext.file = NULL;
-	if (argc != 2)
+	if (argv[1] == NULL || argc > 2)
 	{
-		fprintf(stderr, "Usage: %s file\n", argv[0]);
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
-
-	montyFile = fopen(argv[1], "r");
-	customContext.file = montyFile;
-
-	if (!montyFile)
+	montyfile = fopen(argv[1], "r"); /* attempt to open file */
+	if (montyfile == NULL) /* validate file */
 	{
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
-	while (readLine > 0)
+	while ((fgets(content, sizeof(content), montyfile)) != NULL)
 	{
-		lineContent = NULL;
-		readLine = getline(&lineContent, &size, montyFile);
-		customContext.lineContent = lineContent;
-		count++;
+		num_line++;
+		if (strlen(content) == 0) /*skip empty lines*/
+			continue;
+		token_args(content); /*split line argument into variable args */
 
-		if (readLine > 0)
+		if (*args == NULL) /*skip empty lines having delimiters*/
+			continue;
+		/*for skipping lines with first non-space character #comment*/
+		if (strcmp(args[0], "#") == 0 || args[0][0] == '#')
+			continue;
+		if (select_op_code() == NULL)
 		{
-			exe_opcode(lineContent, &stack, count, montyFile);
+			fprintf(stderr, "L%u: unknown instruction %s\n", num_line, args[0]);
+			exit(EXIT_FAILURE);
 		}
-
-		free(lineContent);
+		else
+			select_op_code()(&stackHead, num_line);
 	}
-	free_stack(stack);
-	fclose(montyFile);
-	return (EXIT_SUCCESS);
+	node_free(stackHead);
+	fclose(montyfile);
+	return (0);
 }
 

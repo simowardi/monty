@@ -1,12 +1,13 @@
 #ifndef MONTY_H
 #define MONTY_H
 
-#include <stdio.h>
+#define _GNU_SOURCE
+
 #include <stdlib.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include <stdio.h>
+#include <stddef.h>
 #include <string.h>
+#include <sys/types.h>
 #include <ctype.h>
 
 /**
@@ -16,13 +17,13 @@
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO Holberton project
+ * for stack, queues, LIFO, FIFO
  */
 typedef struct stack_s
 {
-	int n;
-	struct stack_s *prev;
-	struct stack_s *next;
+		int n;
+		struct stack_s *prev;
+		struct stack_s *next;
 } stack_t;
 
 /**
@@ -31,51 +32,37 @@ typedef struct stack_s
  * @f: function to handle the opcode
  *
  * Description: opcode and its function
- * for stack, queues, LIFO, FIFO Holberton project
+ * for stack, queues, LIFO, FIFO
  */
 typedef struct instruction_s
 {
-	char *opcode;
-	void (*f)(stack_t **stack, unsigned int line_number);
+		char *opcode;
+		void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/**
- * struct MontyContext - Variables - argument, file, lineContent
- * @argument: Value
- * @file: Pointer to Monty file
- * @lineContent: Line content
- * @flagLifi: Flag to change stack <-> queue
- *
- * Description: Carries values through the program
- */
-typedef struct MontyContext
-{
-	char *argument;
-	FILE *file;
-	char *lineContent;
-	int flagLifi;
-} MontyContext_t;
+/* @args: op file parse/tokenized arguments of lines */
+extern char *args[];
 
-extern MontyContext_t montyContext;
+#define DELIM " \n\t\a\r;:"
 
-MontyContext_t customContext = {NULL, NULL, NULL, 0};
+/* add to stack and free stack function*/
+stack_t *stack_addnode(stack_t **head, const int n);
+void node_free(stack_t *head);
 
-int exe_opcode(char *ct, stack_t **stack_h, unsigned int count, FILE *file);
+/*token / parser function*/
+void token_args(char *opcode_line);
 
-void my_add_node(stack_t **head, int n);
+/* op select function */
+void (*select_op_code(void))(stack_t **headstack, unsigned int number_line);
 
-void free_stack(stack_t *head);
-
-void add_node(stack_t **head, int n);
-void add_queue(stack_t **head, int new);
-
-void push_monty(stack_t **head, unsigned int number);
-void pall_monty(stack_t **head, unsigned int number);
-void pint_monty(stack_t **head, unsigned int number);
-void pop_monty(stack_t **head, unsigned int counter);
-
-void swap_top_two_elements(stack_t **stack, unsigned int line_number);
-void add_top_two_elements(stack_t **stack, unsigned int line_number);
-void nop_nothing(stack_t **head, unsigned int line_num);
+/* opfunction */
+void monty_push(stack_t **headstack, unsigned int number_line);
+void montu_pall(stack_t **headstack, unsigned int number_line);
+void monty_pint(stack_t **headstack, unsigned int number_line);
+void monty_pop(stack_t **headstack, unsigned int number_line);
+void monty_swap(stack_t **headstack, unsigned int number_line);
+void monty_add(stack_t **headstack, unsigned int number_line);
+void monty_nop(stack_t **headstack, unsigned int number_line);
 
 #endif
+
