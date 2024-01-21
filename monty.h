@@ -45,6 +45,8 @@ extern char *args[];
 
 #define DELIM " \n\t\a\r;:"
 
+char *args[3];
+
 /* add to stack and free stack function*/
 stack_t *stack_addnode(stack_t **head, const int n);
 void node_free(stack_t *head);
@@ -57,7 +59,7 @@ void (*select_op_code(void))(stack_t **headstack, unsigned int number_line);
 
 /* opfunction */
 void monty_push(stack_t **headstack, unsigned int number_line);
-void montu_pall(stack_t **headstack, unsigned int number_line);
+void monty_pall(stack_t **headstack, unsigned int number_line);
 void monty_pint(stack_t **headstack, unsigned int number_line);
 void monty_pop(stack_t **headstack, unsigned int number_line);
 void monty_swap(stack_t **headstack, unsigned int number_line);

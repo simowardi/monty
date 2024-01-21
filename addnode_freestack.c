@@ -47,7 +47,7 @@ void node_free(stack_t *headstack)
 	while (headstack)
 	{
 		p = headstack;
-		headstack = head->next;
+		headstack = headstack->next;
 		free(p);
 	}
 }

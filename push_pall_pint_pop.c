@@ -25,12 +25,12 @@ void monty_push(stack_t **headstack, unsigned int number_line)
 		exit(EXIT_FAILURE);
 	}
 	if (args[1][0] == '-')
-		i = 1;
+		j = 1;
 	else
-		i = 0;
+		j = 0;
 	while (args[1][j] != '\0') /*identify non-integer element*/
 	{
-		if (!isdigit(args[1][i]))
+		if (!isdigit(args[1][j]))
 		{
 			fprintf(stderr, "L%u: usage: push integer\n", number_line);
 			node_free(*headstack);

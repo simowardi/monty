@@ -11,7 +11,7 @@ void (*select_op_code(void))(stack_t **headstack, unsigned int line_num)
 
 	instruction_t custom_operations[] = {
 		{"push", monty_push},
-		{"pall", montu_pall},
+		{"pall", monty_pall},
 		{"pint", monty_pint},
 		{"pop", monty_pop},
 		{"swap", monty_swap},
