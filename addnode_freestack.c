@@ -23,7 +23,7 @@ stack_t *stack_addnode(stack_t **headstack, const int nvalue)
 	}
 	else
 	{
-		newnode->nvalue = nvalue;
+		newnode->n = nvalue;
 		newnode->prev = NULL;
 		newnode->next = *headstack;
 		(*headstack)->prev = newnode;
@@ -44,7 +44,7 @@ void node_free(stack_t *headstack)
 	if (headstack == NULL)
 		return;
 
-	while (head)
+	while (headstack)
 	{
 		p = headstack;
 		headstack = head->next;
